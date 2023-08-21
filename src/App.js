@@ -5,6 +5,8 @@ import CartPage from './CartPage';
 import StaffDetails from './StaffDetails';
 import { StaffProvider } from './StaffContext';
 import AddStaff from './AddStaff';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getOrdersByStaffId } from './api'; // Assuming you have this function in your api.js
+import { getOrdersByStaffId } from './api';
 
 function CartPage() {
   const { staffId } = useParams();
@@ -19,18 +19,20 @@ function CartPage() {
     fetchOrders();
   }, [staffId]);
 
-  if (orders.length === 0) return <div>No items in the cart.</div>;
+  if (orders.length === 0) return <div className="alert alert-warning">No items in the cart.</div>;
 
   return (
-    <div>
-      <h2>Cart for Staff ID: {staffId}</h2>
-      <ul>
-        {orders.map(order => (
-          <li key={order.orderID}>
-            Product ID: {order.productID}, Quantity: {order.quantity}
-          </li>
+    <div className="container mt-5">
+      <h2 className="mb-4">Cart for {orders[0]?.staffName || `Staff ID: ${staffId}`}</h2>
+      <div className="list-group">
+        {orders.map((order, index) => (
+          <div key={order.orderID || index} className="list-group-item">
+            <strong>Product:</strong> {order.title} | 
+            <strong> Quantity:</strong> {order.quantity} | 
+            <strong> Total Cost:</strong> R{order.totalCost}
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

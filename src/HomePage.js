@@ -22,18 +22,22 @@ function HomePage() {
   }, [staffList, setStaffList]);
 
   return (
-    <div>
-      <h1>Select a Staff Member</h1>
-      <ul>
+    <div className="container mt-5">
+      <h1 className="mb-4">Select a Staff Member</h1>
+      <div className="list-group">
         {staffList.map(staff => (
-          <li key={staff.staffID}>
+          <div key={staff.staffID} className="list-group-item d-flex justify-content-between align-items-center">
             {staff.name} {staff.surname}
-            <Link to={`/staff-details/${staff.staffID}`}>View Details</Link>
-            <Link to={`/cart/${staff.staffID}`}>View Basket</Link>
-          </li>
+            <div className="gridBtns">
+              <Link to={`/staff-details/${staff.staffID}`} className="btn btn-info btn-sm mr-2">View Details</Link>
+              <Link to={`/cart/${staff.staffID}`} className="btn btn-primary btn-sm">View Basket</Link>
+            </div>
+          </div>
         ))}
-      </ul>
-      <Link to="/add-staff">Add New Staff Member</Link>
+      </div>
+      <div className="mt-4">
+        <Link to="/add-staff" className="btn btn-success">Add New Staff Member</Link>
+      </div>
     </div>
   );
 }
