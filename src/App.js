@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './HomePage';
+import CartPage from './CartPage';
+import StaffDetails from './StaffDetails';
+import { StaffProvider } from './StaffContext';
+import AddStaff from './AddStaff';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StaffProvider>
+      <Router>
+        <Routes>
+          <Route path="/cart/:staffId" element={<CartPage />} />
+          <Route path="/staff-details/:staffId" element={<StaffDetails />} />
+          <Route path="/add-staff" element={<AddStaff />} />
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </Router>
+    </StaffProvider>
   );
 }
 
 export default App;
+
