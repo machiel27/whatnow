@@ -41,3 +41,7 @@
   display: flex;
   gap: 12px;
 }
+
+*{
+  background-color: #FAFAF9;
+}

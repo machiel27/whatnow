@@ -23,14 +23,16 @@ function HomePage() {
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4">Select a Staff Member</h1>
+      <h1 className="mb-4">Welcome to the <i>whatnow</i> Inventory Ordering System</h1>
+      <p>Since we don't have a login system, please don't change anyone else's order ;)</p>
+      <p>If you can't find your name in the list, please click on the "Add New Staff Member" button below</p>
       <div className="list-group">
         {staffList.map(staff => (
           <div key={staff.staffID} className="list-group-item d-flex justify-content-between align-items-center">
             {staff.name} {staff.surname}
             <div className="gridBtns">
               <Link to={`/staff-details/${staff.staffID}`} className="btn btn-info btn-sm mr-2">View Details</Link>
-              <Link to={`/cart/${staff.staffID}`} className="btn btn-primary btn-sm">View Basket</Link>
+              <Link to={`/cart/${staff.staffID}`} className="btn btn-primary btn-sm">View Cart</Link>
             </div>
           </div>
         ))}
