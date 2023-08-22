@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addStaff } from './api';
+import BackArrow from './BackArrow';
 
 function AddStaff() {
   const [formData, setFormData] = useState({});
@@ -25,6 +26,7 @@ function AddStaff() {
 
   return (
     <div className="container mt-5">
+      <BackArrow />
       <h2 className="mb-4">Add New Staff Member</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

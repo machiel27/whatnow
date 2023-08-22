@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useStaff } from './StaffContext';
+import BackArrow from './BackArrow';
 
 function StaffDetails() {
   const { staffId } = useParams();
@@ -12,6 +13,7 @@ function StaffDetails() {
 
   return (
     <div className="container mt-5">
+      <BackArrow />
       <h2 className="mb-4">Staff Details for {staff.name} </h2>
       <div className="card">
         <div className="card-body">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getOrdersByStaffId } from './api';
+import BackArrow from './BackArrow';
 
 function CartPage() {
   const { staffId } = useParams();
@@ -23,6 +24,7 @@ function CartPage() {
 
   return (
     <div className="container mt-5">
+      <BackArrow />
       <h2 className="mb-4">Cart for {orders[0]?.staffName || `Staff ID: ${staffId}`}</h2>
       <div className="list-group">
         {orders.map((order, index) => (
