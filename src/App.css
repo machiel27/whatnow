@@ -1,21 +1,37 @@
-.App {
-  text-align: center;
+body, html {
+  height: 100%;
+  margin: 0;
 }
 
-.gridBtns{
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+  background-color: #f5f5f5;
+  padding: 20px 0;
+}
+
+.gridBtns {
   display: flex;
   gap: 12px;
 }
 
 body {
   background: linear-gradient(to right, #FAFAF9, #EDEDED);
-  height: 100vh;
 }
 
-.main-logo{
+.main-logo {
   max-height: 230px;
 }
 
-.icon-margin{
+.icon-margin {
   margin-right: 0.5rem;
 }
