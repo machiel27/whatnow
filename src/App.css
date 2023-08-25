@@ -42,6 +42,8 @@
   gap: 12px;
 }
 
-*{
-  background-color: #FAFAF9;
+body {
+  background: linear-gradient(to right, #FAFAF9, #EDEDED);
+  height: 100%;
+  margin: 0;
 }

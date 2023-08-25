@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getStaff } from './api';
 import { useStaff } from './StaffContext';
@@ -24,7 +24,7 @@ function HomePage() {
   return (
     <div className="container mt-5">
       <h1 className="mb-4">Welcome to the <i>whatnow</i> Inventory Ordering System</h1>
-      <p>Since we don't have a login system, please don't change anyone else's order ;)</p>
+      <p>Since we don't have a login system, please don't change anyone else's cart ;)</p>
       <p>If you can't find your name in the list, please click on the "Add New Staff Member" button below</p>
       <div className="list-group">
         {staffList.map(staff => (
