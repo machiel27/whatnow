@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { getOrdersByStaffId, getProducts, addOrder, deleteOrder } from "./api";
 import BackArrow from "./BackArrow";
 import { useStaff } from "./StaffContext";
 
 function formatZAR(amount) {
-  return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(amount);
-};
+  return new Intl.NumberFormat("en-ZA", {
+    style: "currency",
+    currency: "ZAR",
+  }).format(amount);
+}
 
 function CartPage() {
   const { staffId } = useParams();
@@ -14,14 +17,14 @@ function CartPage() {
   const [products, setProducts] = useState([]);
   const { staffList } = useStaff();
 
-  const fetchCartData = async () => {
+  const fetchCartData = useCallback(async () => {
     try {
       const ordersResponse = await getOrdersByStaffId(staffId);
       setOrders(ordersResponse.data);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
-  };
+  }, [staffId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,7 +38,7 @@ function CartPage() {
     }
 
     fetchData();
-  }, [staffId]);
+  }, [staffId, fetchCartData]);
 
   const handleAddToCart = async (product) => {
     const existingOrder = orders.find(
@@ -114,7 +117,10 @@ function CartPage() {
               data-bs-toggle="collapse"
               data-bs-target="#cartContent"
             >
-              Cart Total: <strong style={{ marginLeft: '8px' }}>{formatZAR(cartTotal)}</strong>
+              Cart Total:{" "}
+              <strong style={{ marginLeft: "8px" }}>
+                {formatZAR(cartTotal)}
+              </strong>
             </button>
           </h2>
           <div
@@ -140,7 +146,9 @@ function CartPage() {
                     {orders.map((order, index) => (
                       <tr key={order.orderID || index}>
                         <td>{order.title}</td>
-                        <td className="text-end">{formatZAR(order.totalCost)}</td>
+                        <td className="text-end">
+                          {formatZAR(order.totalCost)}
+                        </td>
                         <td className="text-center">
                           <button
                             className="btn btn-sm btn-danger me-2"
@@ -218,9 +226,10 @@ function CartPage() {
                                 ? correspondingOrder.quantity
                                 : 0}
                             </span>
-                            <button 
+                            <button
                               className="btn btn-sm btn-success ms-2"
-                              onClick={() => handleAddToCart(product)}>
+                              onClick={() => handleAddToCart(product)}
+                            >
                               +
                             </button>
                           </div>

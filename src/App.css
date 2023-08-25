@@ -11,3 +11,11 @@ body {
   background: linear-gradient(to right, #FAFAF9, #EDEDED);
   height: 100vh;
 }
+
+.main-logo{
+  max-height: 230px;
+}
+
+.icon-margin{
+  margin-right: 0.5rem;
+}
