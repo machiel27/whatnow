@@ -44,6 +44,5 @@
 
 body {
   background: linear-gradient(to right, #FAFAF9, #EDEDED);
-  height: 100%;
-  margin: 0;
+  height: 100vh;
 }
