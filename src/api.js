@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'whatnowapi.azure-api.net';
+const BASE_URL = 'https://whatnow20230825131428.azurewebsites.net';
 
 export const getStaff = () => axios.get(`${BASE_URL}/api/staff`);
 export const addStaff = (staff) => axios.post(`${BASE_URL}/api/staff`, staff);
