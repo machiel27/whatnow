@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addStaff } from "./api";
 import BackArrow from "./BackArrow";
+import { useStaffList } from "./useStaffList";
+import { useStaff } from "./StaffContext";
 
 function AddStaff() {
+  const refetchStaffList = useStaffList();
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+  const { staffList, setStaffList } = useStaff();
 
   const handleChange = (e) => {
     setFormData({
@@ -15,11 +19,10 @@ function AddStaff() {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     const form = e.currentTarget;
 
     if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
       Array.from(form.elements).forEach((input) => {
         if (!input.validity.valid) {
           input.classList.add("is-invalid");
@@ -27,14 +30,17 @@ function AddStaff() {
           input.classList.remove("is-invalid");
         }
       });
-    } else {
-      e.preventDefault();
-      try {
-        await addStaff(formData);
-        navigate("/");
-      } catch (error) {
-        console.error("Error adding staff:", error);
-      }
+      return;
+    }
+
+    try {
+      await addStaff(formData);
+      setStaffList([...staffList, formData]); // Optimistic update
+      refetchStaffList(); // Refetch the staff list after adding
+      navigate("/");
+    } catch (error) {
+      console.error("Error adding staff:", error);
+      // Handle error, possibly reverting the optimistic update if needed
     }
   };
 
@@ -87,10 +93,9 @@ function AddStaff() {
               className="form-control"
               id="addressType"
               required
+              value={formData.addressType || ""} // <-- Set the value prop here
             >
-              <option value="" disabled selected>
-                Select Address Type
-              </option>
+              <option value="">Select Address Type</option>
               <option value="business">Business</option>
               <option value="residential">Residential</option>
             </select>

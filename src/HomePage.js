@@ -1,26 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useStaffList } from './useStaffList';
 import { Link } from "react-router-dom";
-import { getStaff } from "./api";
 import { useStaff } from "./StaffContext";
 import whatnowLogo from "./whatnow_logo.png";
 
 function HomePage() {
-  const { staffList, setStaffList } = useStaff();
+  const refetchStaffList = useStaffList();
+  const { staffList } = useStaff();
 
-  useEffect(() => {
-    async function fetchStaff() {
-      try {
-        const response = await getStaff();
-        setStaffList(response.data);
-      } catch (error) {
-        console.error("Error fetching staff:", error);
-      }
-    }
-
+  React.useEffect(() => {
     if (staffList.length === 0) {
-      fetchStaff();
+      refetchStaffList();
     }
-  }, [staffList, setStaffList]);
+  }, [staffList, refetchStaffList]);
 
   return (
     <div className="container mt-5">
