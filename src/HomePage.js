@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStaffList } from './useStaffList';
 import { Link } from "react-router-dom";
 import { useStaff } from "./StaffContext";
@@ -8,7 +8,7 @@ function HomePage() {
   const refetchStaffList = useStaffList();
   const { staffList } = useStaff();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (staffList.length === 0) {
       refetchStaffList();
     }
