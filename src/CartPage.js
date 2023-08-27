@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { getOrdersByStaffId, getProducts, addOrder, deleteOrder } from "./api";
 import BackArrow from "./BackArrow";
 import { useStaff } from "./StaffContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function formatZAR(amount) {
   return new Intl.NumberFormat("en-ZA", {
@@ -16,6 +18,7 @@ function CartPage() {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const { staffList } = useStaff();
+  const [loadingProducts, setLoadingProducts] = useState({});
 
   const fetchCartData = useCallback(async () => {
     try {
@@ -41,6 +44,7 @@ function CartPage() {
   }, [staffId, fetchCartData]);
 
   const handleAddToCart = async (product) => {
+    setLoadingProducts((prev) => ({ ...prev, [product.productID]: true }));
     const existingOrder = orders.find(
       (order) => order.productID === product.productID
     );
@@ -67,10 +71,12 @@ function CartPage() {
         console.error("Error adding order:", error);
       }
     }
-    fetchCartData();
+    await fetchCartData();
+    setLoadingProducts((prev) => ({ ...prev, [product.productID]: false }));
   };
 
   const handleRemoveFromCart = async (product) => {
+    setLoadingProducts((prev) => ({ ...prev, [product.productID]: true }));
     const existingOrder = orders.find(
       (order) => order.productID === product.productID
     );
@@ -94,7 +100,8 @@ function CartPage() {
           console.error("Error deleting order:", error);
         }
       }
-      fetchCartData();
+      await fetchCartData();
+      setLoadingProducts((prev) => ({ ...prev, [product.productID]: false }));
     }
   };
 
@@ -157,7 +164,11 @@ function CartPage() {
                             -
                           </button>
                           <span className="badge bg-primary">
-                            {order.quantity}
+                            {loadingProducts[order.productID] ? (
+                              <FontAwesomeIcon icon={faSpinner} spin />
+                            ) : (
+                              order.quantity
+                            )}
                           </span>
                           <button
                             className="btn btn-sm btn-success ms-2"
@@ -222,9 +233,13 @@ function CartPage() {
                               -
                             </button>
                             <span className="badge bg-primary">
-                              {correspondingOrder
-                                ? correspondingOrder.quantity
-                                : 0}
+                              {loadingProducts[product.productID] ? (
+                                <FontAwesomeIcon icon={faSpinner} spin />
+                              ) : correspondingOrder ? (
+                                correspondingOrder.quantity
+                              ) : (
+                                0
+                              )}
                             </span>
                             <button
                               className="btn btn-sm btn-success ms-2"
