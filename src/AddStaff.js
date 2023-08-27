@@ -35,12 +35,11 @@ function AddStaff() {
 
     try {
       await addStaff(formData);
-      setStaffList([...staffList, formData]); // Optimistic update
-      refetchStaffList(); // Refetch the staff list after adding
+      setStaffList([...staffList, formData]);
+      refetchStaffList();
       navigate("/");
     } catch (error) {
       console.error("Error adding staff:", error);
-      // Handle error, possibly reverting the optimistic update if needed
     }
   };
 
@@ -93,7 +92,7 @@ function AddStaff() {
               className="form-control"
               id="addressType"
               required
-              value={formData.addressType || ""} // <-- Set the value prop here
+              value={formData.addressType || ""}
             >
               <option value="">Select Address Type</option>
               <option value="business">Business</option>
