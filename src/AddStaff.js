@@ -95,8 +95,8 @@ function AddStaff() {
               value={formData.addressType || ""}
             >
               <option value="">Select Address Type</option>
-              <option value="business">Business</option>
-              <option value="residential">Residential</option>
+              <option value="Business">Business</option>
+              <option value="Residential">Residential</option>
             </select>
             <div className="invalid-feedback">
               Please select an address type.
