@@ -35,3 +35,9 @@ body {
 .icon-margin {
   margin-right: 0.5rem;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

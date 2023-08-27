@@ -1,18 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useStaffList } from './useStaffList';
 import { Link } from "react-router-dom";
 import { useStaff } from "./StaffContext";
 import whatnowLogo from "./whatnow_logo.png";
+import Spinner from './Spinner';
 
 function HomePage() {
   const refetchStaffList = useStaffList();
   const { staffList } = useStaff();
+  const [loadingStaff, setLoadingStaff] = useState({});
 
   useEffect(() => {
-    if (staffList.length === 0) {
-      refetchStaffList();
-    }
-  }, [staffList, refetchStaffList]);
+    const fetchStaff = async () => {
+        if (staffList.length === 0) {
+            setLoadingStaff(true);
+            await refetchStaffList();
+            setLoadingStaff(false);
+        } else {
+            setLoadingStaff(false);
+        }
+    };
+
+    fetchStaff();
+}, [staffList, refetchStaffList]);
+
+
 
   return (
     <div className="container mt-5">
@@ -30,6 +42,9 @@ function HomePage() {
         If you can't find your name in the list, please click on the "Add New
         Staff Member" button below
       </p>
+      {loadingStaff ? (
+            <Spinner />
+        ) : (
       <div className="list-group">
         {staffList.map((staff) => (
           <div
@@ -56,6 +71,7 @@ function HomePage() {
           </div>
         ))}
       </div>
+      )}
       <div className="mt-4">
         <Link to="/add-staff" className="btn btn-success">
           <i className="material-icons align-middle icon-margin">person_add</i>
