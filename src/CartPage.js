@@ -5,6 +5,7 @@ import BackArrow from "./BackArrow";
 import { useStaff } from "./StaffContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "./Spinner";
 
 function formatZAR(amount) {
   return new Intl.NumberFormat("en-ZA", {
@@ -19,11 +20,14 @@ function CartPage() {
   const [products, setProducts] = useState([]);
   const { staffList } = useStaff();
   const [loadingProducts, setLoadingProducts] = useState({});
+  const [loadingCart, setLoadingCart] = useState({});
 
   const fetchCartData = useCallback(async () => {
     try {
+      setLoadingCart(true);
       const ordersResponse = await getOrdersByStaffId(staffId);
       setOrders(ordersResponse.data);
+      setLoadingCart(false);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -137,50 +141,54 @@ function CartPage() {
           >
             <div className="accordion-body">
               <div className="table-responsive">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Product</th>
-                      <th scope="col" className="text-end">
-                        Total Cost
-                      </th>
-                      <th scope="col" className="text-center">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.map((order, index) => (
-                      <tr key={order.orderID || index}>
-                        <td>{order.title}</td>
-                        <td className="text-end">
-                          {formatZAR(order.totalCost)}
-                        </td>
-                        <td className="text-center">
-                          <button
-                            className="btn btn-sm btn-danger me-2"
-                            onClick={() => handleRemoveFromCart(order)}
-                          >
-                            -
-                          </button>
-                          <span className="badge bg-primary">
-                            {loadingProducts[order.productID] ? (
-                              <FontAwesomeIcon icon={faSpinner} spin />
-                            ) : (
-                              order.quantity
-                            )}
-                          </span>
-                          <button
-                            className="btn btn-sm btn-success ms-2"
-                            onClick={() => handleAddToCart(order)}
-                          >
-                            +
-                          </button>
-                        </td>
+                {loadingCart ? (
+                  <Spinner />
+                ) : (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col" className="text-end">
+                          Total Cost
+                        </th>
+                        <th scope="col" className="text-center">
+                          Actions
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {orders.map((order, index) => (
+                        <tr key={order.orderID || index}>
+                          <td>{order.title}</td>
+                          <td className="text-end">
+                            {formatZAR(order.totalCost)}
+                          </td>
+                          <td className="text-center">
+                            <button
+                              className="btn btn-sm btn-danger me-2"
+                              onClick={() => handleRemoveFromCart(order)}
+                            >
+                              -
+                            </button>
+                            <span className="badge bg-primary">
+                              {loadingProducts[order.productID] ? (
+                                <FontAwesomeIcon icon={faSpinner} spin />
+                              ) : (
+                                order.quantity
+                              )}
+                            </span>
+                            <button
+                              className="btn btn-sm btn-success ms-2"
+                              onClick={() => handleAddToCart(order)}
+                            >
+                              +
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </div>
           </div>
