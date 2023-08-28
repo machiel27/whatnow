@@ -8,8 +8,8 @@ import Spinner from "./Spinner";
 function HomePage() {
   const refetchStaffList = useStaffList();
   const { staffList } = useStaff();
-  const [loadingStaff, setLoadingStaff] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [loadingStaff, setLoadingStaff] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchStaff = async () => {
@@ -23,7 +23,11 @@ function HomePage() {
         }
       } catch (error) {
         setLoadingStaff(false);
-        setShowModal(true);
+        if (error.response && error.response.status === 500) {
+            setErrorMessage("It seems like my Azure Database Server is still waking up, you might have to refresh the page a few times. If the issue persists please reach out to me.");
+        } else {
+            setErrorMessage("An unexpected error occurred. Please try again later.");
+        }
       }
     };
 
@@ -46,6 +50,16 @@ function HomePage() {
         If you can't find your name in the list, please click on the "Add New
         Staff Member" button below
       </p>
+
+      {errorMessage && (
+        <div className="alert alert-danger mt-3" role="alert">
+            {errorMessage}
+            <button type="button" className="close" onClick={() => setErrorMessage(null)}>
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      )}
+
       {loadingStaff ? (
         <Spinner />
       ) : (
@@ -82,39 +96,6 @@ function HomePage() {
           Add New Staff Member
         </Link>
       </div>
-      {showModal && (
-        <div className="modal show d-block" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Warning</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowModal(false)}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <p>
-                  It seems like my Azure Database Sever is still waking up, you
-                  might have to refresh the page a few times. If the issue
-                  persists please reach out to me.
-                </p>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowModal(false)}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {showModal && <div className="modal-backdrop show"></div>}
     </div>
   );
 }
